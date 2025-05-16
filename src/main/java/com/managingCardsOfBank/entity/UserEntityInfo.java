@@ -23,7 +23,7 @@ import java.util.List;
 public class UserEntityInfo implements UserDetails {
 
     @Id
-    @SequenceGenerator(name = "user_InfoSequence", sequenceName = "user_Info_sequence", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "user_InfoSequence", sequenceName = "user_Info_sequence", allocationSize = 1, initialValue = 3)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_InfoSequence")
     @Column(name = "id", nullable = false)
 

@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @EnableGlobalMethodSecurity(
-        prePostEnabled = true,  // включает @PreAuthorize и @PostAuthorize
-        securedEnabled = true,  // включает @Secured
-        jsr250Enabled = true   // включает @RolesAllowed (JSR-250)
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true
 )
 @Configuration
 @EnableWebSecurity
@@ -32,27 +32,22 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
-//        http
-//                .csrf()
-//                .disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/api/v1/auth/**")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authonticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//return http.build();
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/api/v1/auth/**")
+                        req->req.requestMatchers(
+                                        "/api/v1/auth/**",
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/v3/api-docs.yaml",
+                                        "/swagger-resources/**",
+                                        "/swagger-resources",
+                                        "/webjars/**",
+                                        "/configuration/ui",
+                                        "/configuration/security"
+                                )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -62,4 +57,5 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 }

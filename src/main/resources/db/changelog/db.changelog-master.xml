@@ -7,6 +7,5 @@
 
     <include file="/db/changeset/V1__create_user_info.sql"/>
     <include file="/db/changeset/V2__create_card_info.sql"/>
-    <include file="/db/changeset/V3__create_table_role.sql"/>
 
 </databaseChangeLog>

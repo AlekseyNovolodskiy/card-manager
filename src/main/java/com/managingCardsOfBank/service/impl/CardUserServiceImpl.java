@@ -24,6 +24,10 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class CardUserServiceImpl implements CardUserService {
 
+    public static final String CARD_BLOCKED="Статус карты заблокирован";
+    public static final String CARD_NOTFOUND = "Карта не найдена";
+    public static final String INSUFFICIENT_FUNDS="Недостаточно средств";
+
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardUsersMapper cardUsersMapper;
@@ -46,7 +50,7 @@ public class CardUserServiceImpl implements CardUserService {
         }
         CardEntityInfo cardEntityInfoByCardNumber = cardRepository.findCardEntityInfoByCardNumber(cardNumber);
         if (cardEntityInfoByCardNumber.getCardStatus().equals(CardStatus.BLOCKED)) {
-            throw new CardInfoException("Статус карты заблокирован");
+            throw new CardInfoException(CARD_BLOCKED);
         }
         cardEntityInfoByCardNumber.setCardStatus(CardStatus.BLOCKED);
 
@@ -66,25 +70,31 @@ public class CardUserServiceImpl implements CardUserService {
         CardEntityInfo recipientByCardNumber = cardRepository.findCardEntityInfoByCardNumber(CardNumberRecipient);
 
         if (isNull(senderByCardNumber)) {
-            throw new CardInfoException("Карта не найдена");
+            throw new CardInfoException(CARD_NOTFOUND);
         }
         if (isNull(recipientByCardNumber)) {
-            throw new CardInfoException("Карта не найдена");
+            throw new CardInfoException(CARD_NOTFOUND);
         }
 
         if (senderByCardNumber.getCardStatus().equals(CardStatus.BLOCKED)) {
-            throw new CardInfoException("Статус карты заблокирован");
+            throw new CardInfoException(CARD_BLOCKED);
         }
         if (recipientByCardNumber.getCardStatus().equals(CardStatus.BLOCKED)) {
-            throw new CardInfoException("Статус карты заблокирован");
+            throw new CardInfoException(CARD_BLOCKED);
         }
         int i = senderByCardNumber.getBalance().compareTo(bigDecimalAmount);
         if (i < 1){
-            throw new CardInfoException("Недостаточно средств");
+            throw new CardInfoException(INSUFFICIENT_FUNDS);
         }
 
 
-        return "";
+        BigDecimal senderByCardNumberBalance = senderByCardNumber.getBalance();
+        BigDecimal recipientByCardNumberBalance = recipientByCardNumber.getBalance();
+
+        senderByCardNumber.setBalance(senderByCardNumberBalance.subtract(bigDecimalAmount));
+        recipientByCardNumber.setBalance(recipientByCardNumberBalance.add(bigDecimalAmount));
+
+        return "Трансфер на "+ amount+ " был совершена";
     }
 
     @Override

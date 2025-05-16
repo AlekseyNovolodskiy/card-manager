@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "card_info")
 public class CardEntityInfo {
     @Id
-    @SequenceGenerator(name = "card_infoSequence", sequenceName = "card_infosequence", allocationSize = 1, initialValue = 5)
+    @SequenceGenerator(name = "card_infoSequence", sequenceName = "card_info_sequence", allocationSize = 1, initialValue = 3)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_infoSequence")
     @Column(name = "id", nullable = false)
     private Long id;

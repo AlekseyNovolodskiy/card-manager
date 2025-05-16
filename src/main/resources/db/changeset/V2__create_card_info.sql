@@ -11,8 +11,7 @@ create table if not exists card_info
 create sequence card_info_sequence start 3 increment 1;
 
 insert into card_info(id, card_number, card_status, expired_date, balance, user_id)
-values (1,'5555111122226666','ACTIVE','2034-07-10',11.01,1),
-       (2,'5555888822226666','ACTIVE','2028-07-10',11001.01,1),
-       (3,'5555888899996666','BLOCKED','2027-07-10',22.01,2),
-       (4,'5555888877776666','ACTIVE','2030-07-10',222222.01,2)
+
+values (1,'5555888899996666','BLOCKED','2027-07-10',22.01,2),
+       (2,'5555888877776666','ACTIVE','2030-07-10',222222.01,2)
 

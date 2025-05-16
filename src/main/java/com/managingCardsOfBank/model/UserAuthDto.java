@@ -1,8 +1,5 @@
 package com.managingCardsOfBank.model;
 
-import lombok.Data;
-
-
 public class UserAuthDto {
     private String password;
     private String login;
